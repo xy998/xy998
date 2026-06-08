@@ -2,10 +2,14 @@
   <title id="title">xy998's Top Languages</title>
   <desc id="desc">Top programming languages generated from public repositories.</desc>
   <style>
-    .title { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #333333; }
-    .label { font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #555555; }
-    .percent { font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #333333; }
-    .meta { font: 500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #777777; }
+    :root { --title: #24292f; --text: #57606a; --value: #24292f; --muted: #6e7781; --accent: #2f81f7; }
+    @media (prefers-color-scheme: dark) {
+      :root { --title: #f0f6fc; --text: #c9d1d9; --value: #f0f6fc; --muted: #8b949e; --accent: #58a6ff; }
+    }
+    .title { font: 600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--title); }
+    .label { font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--text); }
+    .percent { font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--value); }
+    .meta { font: 500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--muted); }
   </style>
   <rect width="360" height="195" rx="6" fill="transparent"/>
   <text class="title" x="24" y="34">Top Languages</text>
