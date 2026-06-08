@@ -1,0 +1,31 @@
+name: Generate GitHub Stats
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+  push:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: write
+
+jobs:
+  generate-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch stats.svg
+        run: |
+          mkdir -p .github/stats
+          curl -fL "https://github-readme-stats.vercel.app/api?username=${{ github.repository_owner }}&show_icons=true&hide_border=true&bg_color=00000000&title_color=333&text_color=555&icon_color=2d76b3" -o .github/stats/stats.svg
+
+      - name: Commit and push stats.svg
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add .github/stats/stats.svg
+          git commit -m "chore: auto-update stats.svg" || echo "No changes"
+          git push origin HEAD:${{ github.ref_name }}
