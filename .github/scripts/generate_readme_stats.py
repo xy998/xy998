@@ -45,10 +45,41 @@ FALLBACK_COLORS = [
     "#DA5B0B",
 ]
 
-SVG_THEME = '''    :root { --title: #24292f; --text: #57606a; --value: #24292f; --muted: #6e7781; --accent: #2f81f7; }
+SVG_THEME = '''    :root {
+      --title: #24292f;
+      --text: #57606a;
+      --value: #24292f;
+      --muted: #6e7781;
+      --accent: #2f81f7;
+      --gradient-a: #0969da;
+      --gradient-b: #8250df;
+      --gradient-c: #bf3989;
+    }
     @media (prefers-color-scheme: dark) {
-      :root { --title: #f0f6fc; --text: #c9d1d9; --value: #f0f6fc; --muted: #8b949e; --accent: #58a6ff; }
+      :root {
+        --title: #f0f6fc;
+        --text: #c9d1d9;
+        --value: #f0f6fc;
+        --muted: #8b949e;
+        --accent: #58a6ff;
+        --gradient-a: #58a6ff;
+        --gradient-b: #a371f7;
+        --gradient-c: #f778ba;
+      }
     }'''
+
+SVG_GRADIENTS = '''  <defs>
+    <linearGradient id="textGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop class="gradient-a" offset="0%"/>
+      <stop class="gradient-b" offset="52%"/>
+      <stop class="gradient-c" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="borderGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop class="gradient-a" offset="0%"/>
+      <stop class="gradient-b" offset="48%"/>
+      <stop class="gradient-c" offset="100%"/>
+    </linearGradient>
+  </defs>'''
 
 
 def api_request(url):
@@ -134,8 +165,8 @@ def stats_svg(username, user, repos, languages):
         y = 70 + row * 42
         cells.append(
             f'<circle class="dot" cx="{x}" cy="{y - 5}" r="4"/>'
-            f'<text class="label" x="{x + 14}" y="{y}">{esc(label)}</text>'
-            f'<text class="value" x="{x + 145}" y="{y}">{esc(compact_number(value))}</text>'
+            f'<text class="label gradient-text" x="{x + 14}" y="{y}">{esc(label)}</text>'
+            f'<text class="value gradient-text" x="{x + 145}" y="{y}">{esc(compact_number(value))}</text>'
         )
 
     return f'''<svg width="495" height="195" viewBox="0 0 495 195" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
@@ -147,11 +178,18 @@ def stats_svg(username, user, repos, languages):
     .label {{ font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--text); }}
     .value {{ font: 700 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--value); }}
     .meta {{ font: 500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--muted); }}
-    .dot {{ fill: var(--accent); }}
+    .gradient-a {{ stop-color: var(--gradient-a); }}
+    .gradient-b {{ stop-color: var(--gradient-b); }}
+    .gradient-c {{ stop-color: var(--gradient-c); }}
+    .gradient-text {{ fill: url(#textGradient); }}
+    .dot {{ fill: url(#textGradient); }}
+    .card-border {{ fill: none; stroke: url(#borderGradient); stroke-width: 1.5; opacity: 0.96; }}
   </style>
-  <rect width="495" height="195" rx="6" fill="transparent"/>
-  <text class="title" x="24" y="34">{esc(username)}'s GitHub Stats</text>
-  <text class="meta" x="24" y="52">Public activity snapshot</text>
+{SVG_GRADIENTS}
+  <rect width="495" height="195" rx="10" fill="transparent"/>
+  <rect class="card-border" x="1" y="1" width="493" height="193" rx="10"/>
+  <text class="title gradient-text" x="24" y="34">{esc(username)}'s GitHub Stats</text>
+  <text class="meta gradient-text" x="24" y="52">Public activity snapshot</text>
   {''.join(cells)}
 </svg>
 '''
@@ -177,12 +215,12 @@ def language_svg(username, languages):
         y = 88 + index * 18
         rows.append(
             f'<circle cx="29" cy="{y - 4}" r="4" fill="{color}"/>'
-            f'<text class="label" x="40" y="{y}">{esc(language)}</text>'
-            f'<text class="percent" x="336" y="{y}" text-anchor="end">{percent:.1f}%</text>'
+            f'<text class="label gradient-text" x="40" y="{y}">{esc(language)}</text>'
+            f'<text class="percent gradient-text" x="336" y="{y}" text-anchor="end">{percent:.1f}%</text>'
         )
 
     if not rows:
-        rows.append('<text class="label" x="24" y="92">No language data yet</text>')
+        rows.append('<text class="label gradient-text" x="24" y="92">No language data yet</text>')
 
     return f'''<svg width="{width}" height="195" viewBox="0 0 {width} 195" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">{esc(username)}'s Top Languages</title>
@@ -193,10 +231,17 @@ def language_svg(username, languages):
     .label {{ font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--text); }}
     .percent {{ font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--value); }}
     .meta {{ font: 500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--muted); }}
+    .gradient-a {{ stop-color: var(--gradient-a); }}
+    .gradient-b {{ stop-color: var(--gradient-b); }}
+    .gradient-c {{ stop-color: var(--gradient-c); }}
+    .gradient-text {{ fill: url(#textGradient); }}
+    .card-border {{ fill: none; stroke: url(#borderGradient); stroke-width: 1.5; opacity: 0.96; }}
   </style>
-  <rect width="{width}" height="195" rx="6" fill="transparent"/>
-  <text class="title" x="24" y="34">Top Languages</text>
-  <text class="meta" x="24" y="52">Across public source repositories</text>
+{SVG_GRADIENTS}
+  <rect width="{width}" height="195" rx="10" fill="transparent"/>
+  <rect class="card-border" x="1" y="1" width="{width - 2}" height="193" rx="10"/>
+  <text class="title gradient-text" x="24" y="34">Top Languages</text>
+  <text class="meta gradient-text" x="24" y="52">Across public source repositories</text>
   <clipPath id="bar">
     <rect x="24" y="56" width="312" height="8" rx="4"/>
   </clipPath>
