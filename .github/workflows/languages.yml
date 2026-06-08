@@ -6,6 +6,8 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main", "master" ]
+    paths-ignore:
+      - ".github/stats/**"
 
 permissions:
   contents: write
@@ -15,17 +17,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Fetch languages.svg
-        run: |
-          mkdir -p .github/stats
-          curl -fL "https://github-readme-stats.vercel.app/api/top-langs?username=${{ github.repository_owner }}&layout=compact&hide_border=true&bg_color=00000000&title_color=333&text_color=555" -o .github/stats/languages.svg
+      - name: Generate languages.svg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: ${{ github.repository_owner }}
+        run: python3 .github/scripts/generate_readme_stats.py languages
 
       - name: Commit and push languages.svg
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add .github/stats/languages.svg
-          git commit -m "chore: auto-update languages.svg" || echo "No changes"
-          git push origin HEAD:${{ github.ref_name }}
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "chore: auto-update languages.svg"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${{ github.ref_name }}"
+            git push origin HEAD:${{ github.ref_name }} && exit 0
+            sleep 3
+          done
+          exit 1

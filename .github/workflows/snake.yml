@@ -11,6 +11,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - ".github/stats/**"
 
 # 定义一个名为 'generate' 的作业
 jobs:
