@@ -54,7 +54,7 @@
     <rect x="24" y="56" width="312" height="8" rx="4"/>
   </clipPath>
   <g clip-path="url(#bar)">
-    <rect x="24.00" y="56" width="309.39" height="8" fill="#f1e05a"/><rect x="333.39" y="56" width="2.61" height="8" fill="#e34c26"/>
+    <rect x="24.00" y="56" width="297.75" height="8" fill="#f1e05a"/><rect x="321.75" y="56" width="8.00" height="8" fill="#3178c6"/><rect x="329.74" y="56" width="3.67" height="8" fill="#563d7c"/><rect x="333.41" y="56" width="2.59" height="8" fill="#e34c26"/>
   </g>
-  <circle cx="29" cy="84" r="4" fill="#f1e05a"/><text class="label gradient-text" x="40" y="88">JavaScript</text><text class="percent gradient-text" x="336" y="88" text-anchor="end">99.2%</text><circle cx="29" cy="102" r="4" fill="#e34c26"/><text class="label gradient-text" x="40" y="106">HTML</text><text class="percent gradient-text" x="336" y="106" text-anchor="end">0.8%</text>
+  <circle cx="29" cy="84" r="4" fill="#f1e05a"/><text class="label gradient-text" x="40" y="88">JavaScript</text><text class="percent gradient-text" x="336" y="88" text-anchor="end">95.4%</text><circle cx="29" cy="102" r="4" fill="#3178c6"/><text class="label gradient-text" x="40" y="106">TypeScript</text><text class="percent gradient-text" x="336" y="106" text-anchor="end">2.6%</text><circle cx="29" cy="120" r="4" fill="#563d7c"/><text class="label gradient-text" x="40" y="124">CSS</text><text class="percent gradient-text" x="336" y="124" text-anchor="end">1.2%</text><circle cx="29" cy="138" r="4" fill="#e34c26"/><text class="label gradient-text" x="40" y="142">HTML</text><text class="percent gradient-text" x="336" y="142" text-anchor="end">0.8%</text>
 </svg>
